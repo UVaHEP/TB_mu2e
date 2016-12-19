@@ -315,7 +315,7 @@ namespace TB_mu2e
         public static List<IV_curve> FEB2IVs = new List<IV_curve>();
         public static Mu2e_FEB_client FEB1;
         public static Mu2e_FEB_client FEB2;
-        public static WC_client WC;
+        
         public static Mu2e_FECC_client FEC;
 
         public static TcpClient active_TcpClient = null;
@@ -429,12 +429,8 @@ namespace TB_mu2e
 
 			/* For Mu2E Remove extra stuff */
 
-            WC = new WC_client();
-            WC.name = "WC";
-            WC.host_name_prop = "FTBFWC01.FNAL.GOV";
-
-            DAQ_server myDAQ_server = new DAQ_server(); // Does not appear to get used, DAQ_server doesn't even grab an IpEnd
-            myDAQ_server.StartRC(); 
+           
+          
 
             myMain = new frmMain();
             Application.Run(myMain);

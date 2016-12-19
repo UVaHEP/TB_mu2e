@@ -56,8 +56,7 @@ namespace TB_mu2e
             btnFEB2.Click += new System.EventHandler(this.button1_Click);
             btnFEB2.Tag = PP.FEB2; btnFEB2.Text = PP.FEB2.host_name_prop;
 
-            btnWC.Click += new System.EventHandler(this.button1_Click);
-            btnWC.Tag = PP.WC; btnWC.Text = PP.WC.host_name_prop;
+          
 
             console_label = new uConsole();
 
@@ -106,7 +105,7 @@ namespace TB_mu2e
 
             for (int k = 0; k < 2; k++)
             {
-                foreach (Control c in tabControl.TabPages[2 + k].Controls)
+                foreach (Control c in tabControl.TabPages[1 + k].Controls)
                 {
                     for (int i = 0; i < num_reg; i++)
                     {
@@ -130,7 +129,7 @@ namespace TB_mu2e
 
             for (int k = 0; k < 2; k++)
             {
-                foreach (Control c in tabControl.TabPages[2 + k].Controls)
+                foreach (Control c in tabControl.TabPages[1 + k].Controls)
                 {
                     for (int i = 0; i < num_reg; i++)
                     {
@@ -184,7 +183,7 @@ namespace TB_mu2e
                 mySender.BackColor = Color.Red;
                 if (comm.name.Contains("FEB1")) { btnFEB1.BackColor = Color.Red; }
                 if (comm.name.Contains("FEB2")) { btnFEB2.BackColor = Color.Red; }
-                if (comm.name.Contains("WC")) { btnWC.BackColor = Color.Red; }
+              
                 if (comm.name.Contains("FECC")) { lblFEB1.BackColor = Color.Red; }
             }
             else
@@ -201,7 +200,7 @@ namespace TB_mu2e
                     PP.active_Socket = PP.FEB1.TNETSocket;
                     dbgFEB1.BackColor = Color.Green;
                     dbgFEB2.BackColor = Color.Gray;
-                    dbgWC.BackColor = Color.Gray;
+                  
                     btnBiasREAD_Click(null, null);
                     btnRegREAD_Click(null, null);
                 }
@@ -216,21 +215,11 @@ namespace TB_mu2e
                     PP.active_Socket = PP.FEB2.TNETSocket;
                     dbgFEB2.BackColor = Color.Green;
                     dbgFEB1.BackColor = Color.Gray;
-                    dbgWC.BackColor = Color.Gray;
+                   
                     btnBiasREAD_Click(null, null);
                     btnRegREAD_Click(null, null);
                 }
-                if (comm.name.Contains("WC"))
-                {
-                    lblWC.BackColor = Color.Green;
-                    _ActiveFEB = 0;
-                    lblActive.Text = "NONE";
-                    PP.active_Stream = PP.WC.stream_prop;
-                    PP.active_Socket = PP.WC.TNETSocket_prop;
-                    dbgFEB2.BackColor = Color.Gray;
-                    dbgFEB1.BackColor = Color.Gray;
-                    dbgWC.BackColor = Color.Green;
-                }
+                
                 if (comm.name.Contains("FECC")) { }
                 lblMessage.Text = DateTime.Now + " -> " + comm.m_prop;
             }
@@ -247,17 +236,17 @@ namespace TB_mu2e
             {
                 if (e.KeyChar.ToString() == " ")
                 {
-                    if (dbgFEB2.BackColor == Color.Green)
-                    { dbgFEB_Click((object)dbgWC, null); textBox1.Text = ""; return; }
+                    //if (dbgFEB2.BackColor == Color.Green)
+                   // { dbgFEB_Click((object)dbgWC, null); textBox1.Text = ""; return; }
                     if (dbgFEB1.BackColor == Color.Green)
                     { dbgFEB_Click((object)dbgFEB2, null); textBox1.Text = ""; return; }
-                    if (dbgWC.BackColor == Color.Green)
-                    { dbgFEB_Click((object)dbgFEB1, null); textBox1.Text = ""; return; }
+                    //if (dbgWC.BackColor == Color.Green)
+                    //{ dbgFEB_Click((object)dbgFEB1, null); textBox1.Text = ""; return; }
                 }
-                if (e.KeyChar.ToString() == "1")
-                { dbgFEB_Click((object)dbgWC, null); }
-                if (e.KeyChar.ToString() == "2")
-                { dbgFEB_Click((object)dbgWC, null); }
+              //  if (e.KeyChar.ToString() == "1")
+              //  { dbgFEB_Click((object)dbgWC, null); }
+              //  if (e.KeyChar.ToString() == "2")
+              //  { dbgFEB_Click((object)dbgWC, null); }
             }
         }
 
@@ -411,11 +400,7 @@ namespace TB_mu2e
                 button1_Click((object)btnFEB2, e);
                 lblConsole_disp.Text = console_label.add_messg("---- FEB2 ----\r\n");
             }
-            if (myName.Contains("WC"))
-            {
-                button1_Click((object)btnWC, e);
-                lblConsole_disp.Text = console_label.add_messg("----  WC  ----\r\n");
-            }
+           
             if (myName.Contains("FECC")) { }
         }
 
@@ -951,71 +936,72 @@ namespace TB_mu2e
         }
 
         private void btnTestSpill_Click(object sender, EventArgs e)
-        {
-            bool in_spill;
-            string s_num_trig;
-            UInt32 num_trig;
-            string s_WC_time;
-            //--->            mu2e_Event ev = new mu2e_Event();
-
-            WC_client.check_status(out in_spill, out s_num_trig, out s_WC_time);
-            try { num_trig = Convert.ToUInt32("0x0" + s_num_trig, 16); }
-            catch { num_trig = 0; }
-
-
-            Mu2e_Register r2;
-            Mu2e_Register.FindName("TRIG_CONTROL", ref PP.FEB1.arrReg, out r2);
-            // Mu2e_Register.WriteReg(0x0350, ref r2, ref PP.FEB1.client);
-            Mu2e_Register r3;
-            Mu2e_Register.FindName("SPILL_STATE", ref PP.FEB1.arrReg, out r3);
-            System.Threading.Thread.Sleep(250);
-            Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
-
-
-
-            //if (_ActiveFEB == 1)
-            //{
-            //    while (r3.val < 6)
-            //    {
-            //        System.Threading.Thread.Sleep(250);
-            //        Application.DoEvents();
-            //        Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
-            //        Console.WriteLine("waiting for spill to start");
-            //    }
-
-            //    while (r3.val == 6)
-            //    {
-            //        System.Threading.Thread.Sleep(250);
-            //        Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
-            //        if (PP.glbDebug){ Console.WriteLine("still in spill");
-            //    }
-            //    PP.FEB1.ReadAll(ref ev, ref PP.FEB1.client);
-            //}
-            //else if (_ActiveFEB == 2)
-            {
-
-                if (!in_spill) { WC_client.FakeSpill(); in_spill = true; }
-
-                while (in_spill)
-                {
-                    System.Threading.Thread.Sleep(250);
-                    WC_client.check_status(out in_spill, out s_num_trig, out s_WC_time);
-
-                    if (PP.glbDebug) { Console.Write(in_spill.ToString() + " "); }
-                    Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
-                    if (PP.glbDebug) { Console.Write(r3.val.ToString() + " "); }
-                    Mu2e_Register.ReadReg(ref r3, ref PP.FEB2.client);
-                    if (PP.glbDebug) { Console.Write(r3.val.ToString() + " "); }
-                }
-                //PP.FEB2.ReadAll(ref ev, ref PP.FEB2.client);
-                //PP.FEB1.ReadAll(ref ev, ref PP.FEB1.client);
-                int len = 0;
-                WC_client.read_TDC(out len);
-                if (PP.glbDebug){ Console.WriteLine(" "); }
-                if (PP.glbDebug){ Console.WriteLine(len); }
-                if (PP.glbDebug){ Console.WriteLine("done "); }
-
-            }
+        { }
+        
+//            bool in_spill;
+//            string s_num_trig;
+//            UInt32 num_trig;
+//            string s_WC_time;
+//            //--->            mu2e_Event ev = new mu2e_Event();
+//
+//            WC_client.check_status(out in_spill, out s_num_trig, out s_WC_time);
+//            try { num_trig = Convert.ToUInt32("0x0" + s_num_trig, 16); }
+//            catch { num_trig = 0; }
+//
+//
+//            Mu2e_Register r2;
+//            Mu2e_Register.FindName("TRIG_CONTROL", ref PP.FEB1.arrReg, out r2);
+//            // Mu2e_Register.WriteReg(0x0350, ref r2, ref PP.FEB1.client);
+//            Mu2e_Register r3;
+//            Mu2e_Register.FindName("SPILL_STATE", ref PP.FEB1.arrReg, out r3);
+//            System.Threading.Thread.Sleep(250);
+//            Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
+//
+//
+//
+//            //if (_ActiveFEB == 1)
+//            //{
+//            //    while (r3.val < 6)
+//            //    {
+//            //        System.Threading.Thread.Sleep(250);
+//            //        Application.DoEvents();
+//            //        Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
+//            //        Console.WriteLine("waiting for spill to start");
+//            //    }
+//
+//            //    while (r3.val == 6)
+//            //    {
+//            //        System.Threading.Thread.Sleep(250);
+//            //        Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
+//            //        if (PP.glbDebug){ Console.WriteLine("still in spill");
+//            //    }
+//            //    PP.FEB1.ReadAll(ref ev, ref PP.FEB1.client);
+//            //}
+//            //else if (_ActiveFEB == 2)
+//            {
+//
+//                if (!in_spill) { WC_client.FakeSpill(); in_spill = true; }
+//
+//                while (in_spill)
+//                {
+//                    System.Threading.Thread.Sleep(250);
+//                    WC_client.check_status(out in_spill, out s_num_trig, out s_WC_time);
+//
+//                    if (PP.glbDebug) { Console.Write(in_spill.ToString() + " "); }
+//                    Mu2e_Register.ReadReg(ref r3, ref PP.FEB1.client);
+//                    if (PP.glbDebug) { Console.Write(r3.val.ToString() + " "); }
+//                    Mu2e_Register.ReadReg(ref r3, ref PP.FEB2.client);
+//                    if (PP.glbDebug) { Console.Write(r3.val.ToString() + " "); }
+//                }
+//                //PP.FEB2.ReadAll(ref ev, ref PP.FEB2.client);
+//                //PP.FEB1.ReadAll(ref ev, ref PP.FEB1.client);
+//                int len = 0;
+//                WC_client.read_TDC(out len);
+//                if (PP.glbDebug){ Console.WriteLine(" "); }
+//                if (PP.glbDebug){ Console.WriteLine(len); }
+//                if (PP.glbDebug){ Console.WriteLine("done "); }
+//
+//            }
 
             //Mu2e_Register r2;
             //Mu2e_Register.FindName("SPILL_TRIG_COUNT", ref PP.FEB2.arrReg, out r2);
@@ -1036,7 +1022,7 @@ namespace TB_mu2e
             //        PP.FEB2.ReadAll(ref ev);
             //    }
             //}
-        }
+//        }
 
         private void chkLogY_CheckedChanged(object sender, EventArgs e)
         {
@@ -1133,9 +1119,7 @@ namespace TB_mu2e
         private void btnConnectAll_Click(object sender, EventArgs e)
         {
             Application.DoEvents();
-            if (chkWC.Checked)
-            { button1_Click((object)btnWC, e); }
-            Application.DoEvents();
+           
             if (chkFEB1.Checked)
             { button1_Click((object)btnFEB1, e); }
             Application.DoEvents();
@@ -1344,28 +1328,7 @@ namespace TB_mu2e
                             spill_trig_num[1] = (int)trig_num;
                         }
 
-                        if (PP.WC.ClientOpen)
-                        {
-
-                            string num_trig;
-                            string mytime;
-                            WC_client.check_status(out in_spill, out num_trig, out mytime);
-                            lblSpillWC.Text = in_spill.ToString();
-                            //spill_trig_num[2] = Convert.ToInt32(num_trig);
-
-                            if (in_spill)
-                            {
-                                if (PP.myRun != null)
-                                {
-                                    PP.myRun.timeLastSpill = DateTime.Now;
-                                    PP.myRun.UpdateStatus("Detected spill. Run file is " + PP.myRun.OutFileName);
-                                    PP.myRun.spill_complete = false;
-                                }
-                            }
-
-
-                            lblWCTrigNum.Text = num_trig;
-                        }
+                       
                     }
                 }
             }
@@ -1373,59 +1336,20 @@ namespace TB_mu2e
 
         private void btnPrepare_Click(object sender, EventArgs e)
         {
-            if ((!PP.FEB1.ClientOpen && chkFEB1.Checked) || (!PP.FEB2.ClientOpen && chkFEB2.Checked) || (!PP.WC.ClientOpen && chkWC.Checked))
-            { MessageBox.Show("Are all clients open?"); }
-            timer1.Enabled = false;
-            PP.myRun = new Run();
-            if (chkFakeIt.Checked) { PP.myRun.fake = true; }
-            else { PP.myRun.fake = false; }
-
-            if (PP.myRun.fake == false)
-            #region notfake
-            {
-                WC_client.DisableTrig();
-                PP.myRun.UpdateStatus("waiting for spill to disable WC");
-                if (!PP.WC.in_spill) { WC_client.FakeSpill(); }
-                int spill_timeout = 0;
-                int big_count = 0;
-                bool inspill = false;
-                string X = "";
-                string Y = "";
-                lblRunTime.Text = "not running";
-                PP.myRun.ACTIVE = false;
-                while (!inspill)
-                {
-                    if (PP.glbDebug) { Console.WriteLine("waiting for spill"); }
-                    System.Threading.Thread.Sleep(200);
-                    Application.DoEvents();
-                    WC_client.check_status(out inspill, out X, out Y);
-                    spill_timeout++;
-                    if (spill_timeout > 500) { WC_client.FakeSpill(); spill_timeout = 0; big_count++; }
-                    if (big_count > 3) { MessageBox.Show("can't get a spill..."); return; }
-                }
-                PP.myRun.UpdateStatus("in spill....");
-                while (PP.WC.in_spill)
-                {
-                        if (PP.glbDebug) { Console.WriteLine("waiting for spill to end"); }
-                    System.Threading.Thread.Sleep(200);
-                    WC_client.check_status(out inspill, out X, out Y);
-                    Application.DoEvents();
-                }
-                PP.myRun.UpdateStatus("Prepairing FEB1 and FEB2");
-                //            PP.FEB1.GetReady();
-                //            PP.FEB2.GetReady();
-                PP.myRun.UpdateStatus("Arming WC");
-                if (!PP.WC.in_spill) { WC_client.EnableTrig(); }
-                lblRunName.Text = PP.myRun.run_name;
-                timer1.Enabled = true;
-            }
-            #endregion notfake
-            else
-            {
-                PP.myRun.UpdateStatus("Fake Run- sending spills to FEB1");
-                lblRunName.Text = PP.myRun.run_name;
-                timer1.Enabled = true;
-            }
+//            if ((!PP.FEB1.ClientOpen && chkFEB1.Checked) || (!PP.FEB2.ClientOpen && chkFEB2.Checked) || (!PP.WC.ClientOpen && chkWC.Checked))
+//            { MessageBox.Show("Are all clients open?"); }
+//            timer1.Enabled = false;
+//            PP.myRun = new Run();
+//            if (chkFakeIt.Checked) { PP.myRun.fake = true; }
+//            else { PP.myRun.fake = false; }
+//
+//          
+//            else
+//            {
+//                PP.myRun.UpdateStatus("Fake Run- sending spills to FEB1");
+//                lblRunName.Text = PP.myRun.run_name;
+//                timer1.Enabled = true;
+//            }
         }
 
         private void btnStartRun_Click(object sender, EventArgs e)
@@ -1463,14 +1387,14 @@ namespace TB_mu2e
 
         private void chkFakeIt_CheckedChanged(object sender, EventArgs e)
         {
-            WC_client.DisableFake();
+            //WC_client.DisableFake();
             //if (PP.WC.ClientOpen)
             //{
             //    if (chkFakeIt.Checked) { WC_client.ForeverFake(); }
             //    else { WC_client.DisableFake(); }
             //}
             //if (chkFakeIt.Checked) { btnOneSpill.Visible = true; } else { btnOneSpill.Visible = false; }
-            btnOneSpill.Visible = false;
+            //btnOneSpill.Visible = false;
         }
 
         private void btnChangeName_Click(object sender, EventArgs e)

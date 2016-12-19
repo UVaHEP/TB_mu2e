@@ -21,7 +21,7 @@ namespace TB_mu2e
         {
             textBox1.Text = PP.FEB1.host_name_prop;
             textBox2.Text = PP.FEB2.host_name_prop;
-            textBox3.Text = PP.WC.host_name_prop;
+           
         }
 
         private void btnSetFEB1_Click(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace TB_mu2e
 
         private void btnSetWC_Click(object sender, EventArgs e)
         {
-            PP.WC.host_name_prop = textBox3.Text;
+           
         }
 
         private void btnDone_Click(object sender, EventArgs e)
