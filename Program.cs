@@ -24,6 +24,8 @@ namespace Mu2e_SiPM_Test
 		[STAThread]
 		private static void Main(string[] args)
 		{
+			
+
 			Debug.WriteLine("Running Mu2e_SiPM_Test");
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);

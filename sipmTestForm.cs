@@ -24,12 +24,27 @@ namespace Mu2e_SiPM_Test
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
+
+			//Setup the colors and other settings for each of the buttons and labels 
+
+			this.sipm1.BackColor = Color.Red; 
+			this.sipm2.BackColor = Color.Red; 
+			this.sipm3.BackColor = Color.Red; 
+			this.sipm4.BackColor = Color.Red; 
+			this.sipm5.BackColor = Color.Red; 
+			this.sipm6.BackColor = Color.Red; 
+			this.sipm7.BackColor = Color.Red; 
+			this.sipm8.BackColor = Color.Red; 
+			this.connectBtn.BackColor = Color.Red; 
+
+			this.FEBConnected.ForeColor = Color.Red; 
+
+
+
 		}
-		
+
+
+		//Each of the SiPMClicks will eventually open a form containing the data for the previous measurement sequence
 		void Sipm1Click(object sender, EventArgs e)
 		{
 			Debug.WriteLine("Sipm 1");
